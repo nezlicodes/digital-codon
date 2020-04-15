@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-Hi thank you for stopping by
+Hi thank you for stopping by.

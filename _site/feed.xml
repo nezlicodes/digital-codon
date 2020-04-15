@@ -6,8 +6,8 @@
 </description>
     <link>https://nezlicodes.io/digital-codon/</link>
     <atom:link href="https://nezlicodes.io/digital-codon/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 15 Apr 2020 17:09:10 +0200</pubDate>
-    <lastBuildDate>Wed, 15 Apr 2020 17:09:10 +0200</lastBuildDate>
+    <pubDate>Wed, 15 Apr 2020 23:52:11 +0200</pubDate>
+    <lastBuildDate>Wed, 15 Apr 2020 23:52:11 +0200</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -35,6 +35,116 @@
         <category>jekyll</category>
         
         <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>Basic Command line tools for bioinformatics</title>
+        <description>&lt;p&gt;So I’m in week 02 of the Coursera course &lt;a href=&quot;https://www.coursera.org/learn/genomic-tools&quot; target=&quot;_about&quot;&gt; Command Line Tools for Genomic Data Science &lt;/a&gt; and I am really having fun.&lt;/p&gt;
+
+&lt;p&gt;I feel like I learned a lot already. It’s been a dense week that I would like to sum up.&lt;/p&gt;
+
+&lt;h1 id=&quot;sequences-representation&quot;&gt;Sequences representation&lt;/h1&gt;
+
+&lt;p&gt;Learning bioinformatics implies learning first about a number of file formats. Each file type differ from the other in the way data is represented and it’s primordial to know the general structure of the file in order to manipulate it properly.
+Here, we will cover:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt; fasta &lt;/li&gt;
+&lt;li&gt; fastq &lt;/li&gt;
+&lt;li&gt; BED &lt;/li&gt;
+&lt;li&gt; gtf/gff &lt;/li&gt;
+&lt;li&gt; sam/bam &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;fasta&quot;&gt;fasta&lt;/h4&gt;
+&lt;p&gt;A fasta file is a simple way of representing nucleotide and amino-acid sequences. It can store one or many records. Each record contains a one-line header that starts with a greater than sign ‘&amp;gt;’and contains basic information about the sequence (accession number, ID, name, organism, you name it..) followed by the sequence that can contain one line or more.
+It is important to note that any tabulators, spaces, asterisks etc in sequence will be ignored.
+You can comment lines i.e ignore them using the ‘;’&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9626243&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ref&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;NC_001416&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Enterobacteria&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;phage&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;lambda&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;complete&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;genome&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;GGGCGGCGACCTCGCGGGTTTTCGCTATTTATGAAAATTTTCCGGTTTAAGGCGTTTCCGTTCTTCTTCG&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;TCATAACTTAATGTTTTTATTTAAAATACCCTCTGAAAAGAAAGGAAACGACAGGTGCTGAAAGCGAGGC&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;TTTTTGGCCTCTGTCGTTTCCTTTCTCTGTTTTTGTCCGTGGAATGAACAATGGAAGTCAACAAAAAGCA&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;##;Ignore me&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;fastq&quot;&gt;fastq&lt;/h4&gt;
+&lt;p&gt;With the advent of next generation sequencing technologies (NGS), we started adding more information to the sequences, which becomes important in bioinformatics applications that need to take into account the quality. For this purpose emerged the Fastq Format.
+Typically, each record in this file type contains 4 lines:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;A header that starts with the sign ‘@’&lt;/li&gt;
+  &lt;li&gt;The raw sequence.&lt;/li&gt;
+  &lt;li&gt;A line that start with ‘+’ and can contain additional information about the sequence.&lt;/li&gt;
+  &lt;li&gt;A line that  encodes the quality value for the sequence in line 2 using ASCII characters.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;vi&quot;&gt;@SRR835775&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;TAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTAACCCTCACCCTAACCCTAACCCTAACCGTATCCGTCACCCTAACCCTAAC&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+&lt;span class=&quot;sc&quot;&gt;??&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;B1ADDD8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;??&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;BB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;AA883CEE8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;C3&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@DDD3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)?&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;D2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;BAD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@C&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;6.6&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;?@&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;##################################&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;browser-extensible-data-bed&quot;&gt;Browser Extensible Data (BED)&lt;/h4&gt;
+&lt;p&gt;BED (Browser Extensible Data) format provides a flexible way to define the data lines that are displayed in an annotation track. BED lines have three required fields (Scaffold: chromose, transcript…, the 0-based start, and the end coordinates of the sequences considered) and nine additional optional fields(name, score, strand…). The columns are separated by tabs or spaces and the number of fields per line must be consistent throughout any single set of data in an annotation track.
+Because of their simplicity BED files are widely use, and we will see in another post how to retreive bedfiles and analyze them using bedtools.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;chr22&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;10510227&lt;/span&gt;        &lt;span class=&quot;mi&quot;&gt;10510528&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;AluSx1&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;2021&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;chr22&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;10514778&lt;/span&gt;        &lt;span class=&quot;mi&quot;&gt;10515050&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;AluSx1&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1933&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;chr22&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;10519673&lt;/span&gt;        &lt;span class=&quot;mi&quot;&gt;10519746&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;AluJo&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;474&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;chr22&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;10520950&lt;/span&gt;        &lt;span class=&quot;mi&quot;&gt;10521193&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;AluJo&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;1258&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;chr22&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;10522328&lt;/span&gt;        &lt;span class=&quot;mi&quot;&gt;10522608&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;AluSg&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;2274&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;chr22&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;10528506&lt;/span&gt;        &lt;span class=&quot;mi&quot;&gt;10528771&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;AluJr&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;1344&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;chr22&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;10529446&lt;/span&gt;        &lt;span class=&quot;mi&quot;&gt;10529561&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;AluJo&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;771&lt;/span&gt;     &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;sequence-alignment-map-sam&quot;&gt;Sequence Alignment Map (SAM)&lt;/h4&gt;
+&lt;p&gt;It is a TAB-delimited text format with a:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Multi-line header: every line starting with ‘@’. It contains informations about the number of segments, the number of sequences, the program by which it has been generation and if the sequences are sorted or not. Note that the header may be absent.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;vi&quot;&gt;@HD&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;VN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.0&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;GO&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:none&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;SO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sorted&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;by&lt;/span&gt;
+&lt;span class=&quot;vi&quot;&gt;@SQ&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;SN&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Chr1&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2992&lt;/span&gt;   
+&lt;span class=&quot;vi&quot;&gt;@SQ&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;SN&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Chr2&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;19381&lt;/span&gt; 
+&lt;span class=&quot;vi&quot;&gt;@RG&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:H100223_GAII05_0002&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;PL&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:SLX&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;LB&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:wu_PII&lt;/span&gt;       &lt;span class=&quot;no&quot;&gt;PI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;DS&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:wu_0_Genome&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;SM&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:wu_0&lt;/span&gt;
+&lt;span class=&quot;vi&quot;&gt;@RG&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Wii_PER01&lt;/span&gt;    &lt;span class=&quot;no&quot;&gt;PL&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:SLX&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;LB&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:wu_phaseI&lt;/span&gt;    &lt;span class=&quot;no&quot;&gt;PI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;DS&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:wu_0_Genome&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;SM&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:wu_0&lt;/span&gt;
+&lt;span class=&quot;vi&quot;&gt;@PG&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Program&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;       &lt;span class=&quot;no&quot;&gt;VN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;CL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Command&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;line&lt;/span&gt;
+&lt;span class=&quot;vi&quot;&gt;@CO&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;TM&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Fri&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sep&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2010&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;BST&lt;/span&gt;        &lt;span class=&quot;no&quot;&gt;WD&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lustre&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;scratch103&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sanger&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xcg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;wu_0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;      &lt;span class=&quot;no&quot;&gt;HN&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:bc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;07&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;internal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sanger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ac&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;uk&lt;/span&gt;     &lt;span class=&quot;no&quot;&gt;UN&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:xcg&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;body: constituted  by the alignment records. Each alignment line has 11 &lt;strong&gt;mandatory&lt;/strong&gt; that always come in the same order and contain the information that follows:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+   &lt;li&gt;QNAME : Query template NAME. &lt;/li&gt;
+    &lt;li&gt;FLAG: combination of multiple series of information all of which are represented in binary (bits). &lt;/li&gt;
+    &lt;li&gt;RNAME:  Reference sequence NAME of the alignment it matches a @SQ field in the header section. &lt;/li&gt;
+     &lt;li&gt;POS : 1-based leftmost mapping position. &lt;/li&gt;
+    &lt;li&gt;MAPQ : Mapping quality. &lt;/li&gt;
+    &lt;li&gt;CIGAR : stands for Concise Idiosyncratic Gapped Alignment Report it describes the alignment (insertions, deletions, matches...). &lt;/li&gt;
+    &lt;li&gt;RNEXT : Reference sequence name of the primary alignment of the NEXT read in the template&lt;/li&gt;
+    &lt;li&gt;PNEXT: Position of the next read in the template. (1-based)&lt;/li&gt;
+    &lt;li&gt;TLEN:	Template length. &lt;/li&gt;
+    &lt;li&gt;SEQ:	Read Sequence. &lt;/li&gt;
+    &lt;li&gt;QUAL: Read Quality. &lt;/li&gt;
+  &lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;vi&quot;&gt;@SRR835775&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;readID43GYAX15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1202&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;19894&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;contig87&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;540849&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;65&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;M&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;    &lt;span class=&quot;no&quot;&gt;CCTGCACGAACGAAATCCGCATGCGTCTGGTCGTTGTACGGAACGGCGGTTGTGTGACGAACGGC&lt;/span&gt;    &lt;span class=&quot;no&quot;&gt;EDDEEDEE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;??&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DDDBADEBEFFFDBEFFEBCBC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;BEEEE&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;?:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;?7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;?#&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;AS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;XS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;XN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;XM&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;XO&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;XG&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;no&quot;&gt;NM&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;    &lt;span class=&quot;no&quot;&gt;MD&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;65&lt;/span&gt;    &lt;span class=&quot;no&quot;&gt;YT&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Z:UU&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You can read more about the SAM format &lt;a href=&quot;http://samtools.github.io/hts-specs/SAMv1.pdf&quot; target=&quot;_about&quot;&gt; here &lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;bam-binary-alignment-map&quot;&gt;Bam (Binary Alignment Map)&lt;/h4&gt;
+&lt;p&gt;BAM files are compressed (binary) SAM files. They contain the same information.Their small size make them ideal to store alignment files. And that’s when the command line comes in handy. We will use samtools in order to view the file in the upcoming post.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 Apr 2020 16:58:59 +0200</pubDate>
+        <link>https://nezlicodes.io/digital-codon/bioinfomatics/genomic/data/science/2020/04/15/Basic-Command-line-tools-for-bioinformatics.html</link>
+        <guid isPermaLink="true">https://nezlicodes.io/digital-codon/bioinfomatics/genomic/data/science/2020/04/15/Basic-Command-line-tools-for-bioinformatics.html</guid>
+        
+        
+        <category>bioinfomatics</category>
+        
+        <category>genomic</category>
+        
+        <category>data</category>
+        
+        <category>science</category>
         
       </item>
     
